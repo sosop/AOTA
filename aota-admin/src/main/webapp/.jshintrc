@@ -1,0 +1,16 @@
+{
+  "undef": true,
+  "unused": true,
+  "camelcase": true,
+  "curly": true,
+  "eqeqeq": true,
+  "latedef": "nofunc",
+  "newcap": true,
+  "noarg": true,
+  "noempty": true,
+  "nonew": true,
+  "quotmark": true,
+  "globals": {
+    "jQuery": true,
+  }
+}

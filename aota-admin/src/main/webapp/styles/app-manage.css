@@ -1,0 +1,112 @@
+.form-section {
+	float: left;
+	width: 70%;
+	border-right: 1px dotted #ddd;
+}
+.img-upload-section {
+	float: left;
+	width: 30%;
+	padding: 10px 0px 10px 15px;
+	color: #666;
+}
+.detail, .permission{
+	border: none;
+	min-height: 100px;
+	width: 100%;
+	resize: vertical;
+	margin: 0px;
+	font-size: 0.9em;
+	color: #666;
+}
+.detail:focus, .permission:focus{
+	outline: none;
+}
+.img-upload-section h5{
+	margin: 0px;
+}
+.img-upload-section p {
+	margin-bottom: 10px;
+}
+/* upload */
+.upload-area {
+	display: inline-block;
+	width: 100px;
+	height: 100px;
+	border: 4px dashed #e8e8e8;
+	color: #e8e8e8;
+	text-align: center;
+	margin: 4px 8px 4px 0px;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+	-webkit-transition: border-color 0.4s ease 0s,
+						color 0.4s ease 0s;
+	transition: border-color 0.4s ease 0s,
+				color 0.4s ease 0s;
+}
+.app-ss-upload {
+	padding-left: 10px;
+}
+.app-ss-upload .upload-area {
+	float: left;
+}
+.upload-area:before{
+	position: absolute;
+	font-family: Verdana, sans-serif; /* use Arial and Helvetica fonts will render 10px belower in firefox */
+	content: "+";
+	font-weight: bolder;
+	font-size: 50px;
+	line-height: 42px;
+	width: 50px;
+	top: 50%;
+	left: 50%;
+	margin-top: -25px;
+	margin-left: -25px;
+	z-index: 10;
+}
+.upload-area:hover {
+	border-color: #cef0ff;
+	color: #cef0ff;
+}
+.upload-area:active {
+	border-color: #009cde;
+	color: #009cde;
+}
+.upload-area:before {
+	
+}
+.upload-area img {
+	position: relative;
+	display: none;
+	width: 100%;
+	height: 100%;
+	z-index: 11;
+}
+.upload-area .cover {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background: #fff;
+	z-index: -1;
+}
+.app-icon-upload {
+	text-align: center;
+	margin-bottom: 15px;
+}
+.app-ss-upload {
+	text-align: center;
+}
+
+#choose-apk, #upload-apk {
+	min-width: 72px;
+}
+
+/* upgrade rule */
+#upgrade-rule .table-form {
+	width: 80%;
+	margin: auto;
+	color: #666;
+	margin-top: -16px;
+}

@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tcl.aota.persistent.dao.db.AppDAO">
+	<resultMap id="BaseResultMap" type="com.tcl.aota.persistent.model.App">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="app_name" property="appName" jdbcType="VARCHAR" />
+		<result column="apk_pack_name" property="apkPackName" jdbcType="VARCHAR" />
+		<result column="app_size" property="appSize" jdbcType="VARCHAR" />
+		<result column="app_start_grade" property="appStartGrade"
+			jdbcType="VARCHAR" />
+		<result column="app_developer" property="appDeveloper"
+			jdbcType="VARCHAR" />
+		<result column="app_detail" property="appDetail" jdbcType="VARCHAR" />
+		<result column="app_permission" property="appPermission"
+			jdbcType="VARCHAR" />
+		<result column="app_icon" property="appIcon" jdbcType="VARCHAR" />
+		<result column="app_imgs" property="appImgs" jdbcType="VARCHAR" />
+		<result column="source_channel" property="sourceChannel"
+			jdbcType="VARCHAR" />
+		<result column="version_name" property="versionName" jdbcType="VARCHAR" />
+		<result column="version_code" property="versionCode" jdbcType="VARCHAR" />
+		<result column="app_url" property="appUrl" jdbcType="VARCHAR" />
+		<result column="app_sequence" property="appSequence" jdbcType="INTEGER" />
+		<result column="trash" property="trash" jdbcType="TINYINT" />
+		<result column="package_id" property="packageId" jdbcType="BIGINT" />
+		<result column="create_Time" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="update_Time" property="updateTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, app_name,apk_pack_name, app_size, app_start_grade,
+		app_developer,
+		app_detail, app_permission,
+		app_icon, app_imgs,
+		source_channel, version_name, version_code, app_url,
+		app_sequence,
+		trash, package_id, create_Time, update_Time
+	</sql>
+	
+	<sql id="Package_App_Column_List">
+		id, app_name, source_channel, version_name, create_Time
+	</sql>
+
+	<select id="selectAppListByConds" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from aota_app
+		<where>
+			<if test="packageId!=null">
+				and package_id=#{packageId}
+			</if>
+			<if test="appName!=null">
+				and app_name like '%${appName}%'
+			</if>
+			<if test="sourceChannel!=null">
+				and source_channel=#{sourceChannel}
+			</if>
+			<if test="appSequence!=null">
+				and app_sequence=#{appSequence}
+			</if>
+			<if test="versionName!=null">
+				and version_name=#{versionName}
+			</if>
+			<if test="appDeveloper!=null">
+				and app_developer=#{appDeveloper}
+			</if>
+			<if test="uploadTime!=null">
+				and create_Time>#{uploadTime}
+			</if>
+			<if test="trash!=null">
+				and trash=#{trash}
+			</if>
+		</where>
+		order by app_sequence limit #{start}, #{pageSize}
+	</select>
+
+    <select id="selectAppCountByConds" resultType="int">
+        select count(1)
+        from aota_app
+        <where>
+            <if test="packageId!=null">
+                and package_id=#{packageId}
+            </if>
+            <if test="appName!=null">
+                and app_name like '%${appName}%'
+            </if>
+            <if test="sourceChannel!=null">
+                and source_channel=#{sourceChannel}
+            </if>
+            <if test="appSequence!=null">
+                and app_sequence=#{appSequence}
+            </if>
+            <if test="versionName!=null">
+                and version_name=#{versionName}
+            </if>
+            <if test="appDeveloper!=null">
+                and app_developer=#{appDeveloper}
+            </if>
+            <if test="uploadTime!=null">
+                and create_Time>#{uploadTime}
+            </if>
+            <if test="trash!=null">
+                and trash=#{trash}
+            </if>
+        </where>
+    </select>
+
+	<select id="selectAppListByIds" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from aota_app where
+		id in
+		<foreach item="id" index="index" collection="list" open="("
+			separator="," close=")">
+			#{id}
+		</foreach>
+	</select>
+
+	<select id="selectAppListByPackageId" resultMap="BaseResultMap">
+		select
+		<include refid="Package_App_Column_List" />
+		from aota_app where trash=0 and package_id=#{packageId,jdbcType=BIGINT}
+	</select>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from aota_app
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from
+		aota_app
+		where id = #{id,jdbcType=BIGINT}
+	</delete>
+
+	<insert id="insert" parameterType="com.tcl.aota.persistent.model.App">
+        <selectKey resultType="long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID() AS ID
+        </selectKey>
+		insert into aota_app (id,
+		app_name,apk_pack_name, app_size,
+		app_start_grade, app_developer,
+		app_detail,
+		app_permission, app_icon, app_imgs,
+		source_channel,
+		version_name, version_code,
+		app_url, app_sequence, trash,
+		package_id,
+		create_Time, update_Time
+		)
+		values (#{id,jdbcType=BIGINT},
+		#{appName,jdbcType=VARCHAR},#{apkPackName,jdbcType=VARCHAR},
+		#{appSize,jdbcType=VARCHAR},
+		#{appStartGrade,jdbcType=VARCHAR},
+		#{appDeveloper,jdbcType=VARCHAR}, #{appDetail,jdbcType=VARCHAR},
+		#{appPermission,jdbcType=VARCHAR}, #{appIcon,jdbcType=VARCHAR},
+		#{appImgs,jdbcType=VARCHAR},
+		#{sourceChannel,jdbcType=VARCHAR},
+		#{versionName,jdbcType=VARCHAR}, #{versionCode,jdbcType=VARCHAR},
+		#{appUrl,jdbcType=VARCHAR}, #{appSequence,jdbcType=INTEGER},
+		#{trash,jdbcType=TINYINT},
+		#{packageId,jdbcType=BIGINT},
+		#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.tcl.aota.persistent.model.App">
+		update aota_app
+		<set>
+			<if test="appName != null">
+				app_name = #{appName,jdbcType=VARCHAR},
+			</if>
+			<if test="apkPackName != null">
+				apk_pack_name = #{apkPackName,jdbcType=VARCHAR},
+			</if>
+			<if test="appSize != null">
+				app_size = #{appSize,jdbcType=VARCHAR},
+			</if>
+			<if test="appStartGrade != null">
+				app_start_grade = #{appStartGrade,jdbcType=VARCHAR},
+			</if>
+			<if test="appDeveloper != null">
+				app_developer = #{appDeveloper,jdbcType=VARCHAR},
+			</if>
+			<if test="appDetail != null">
+				app_detail = #{appDetail,jdbcType=VARCHAR},
+			</if>
+			<if test="appPermission != null">
+				app_permission = #{appPermission,jdbcType=VARCHAR},
+			</if>
+			<if test="appIcon != null">
+				app_icon = #{appIcon,jdbcType=VARCHAR},
+			</if>
+			<if test="appImgs != null">
+				app_imgs = #{appImgs,jdbcType=VARCHAR},
+			</if>
+			<if test="sourceChannel != null">
+				source_channel = #{sourceChannel,jdbcType=VARCHAR},
+			</if>
+			<if test="versionName != null">
+				version_name = #{versionName,jdbcType=VARCHAR},
+			</if>
+			<if test="versionCode != null">
+				version_code = #{versionCode,jdbcType=VARCHAR},
+			</if>
+			<if test="appUrl != null">
+				app_url = #{appUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="appSequence != null">
+				app_sequence = #{appSequence,jdbcType=INTEGER},
+			</if>
+			<if test="trash != null">
+				trash = #{trash,jdbcType=TINYINT},
+			</if>
+			<if test="packageId != null">
+				package_id = #{packageId,jdbcType=BIGINT},
+			</if>
+			<if test="createTime != null">
+				create_Time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_Time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+
+
+	<update id="recoveryApp" parameterType="list">
+		update aota_app
+		<set>
+			package_id = 0,
+			update_Time = NOW()
+		</set>
+		where package_id in
+		<foreach item="id" index="index" collection="list" open="("
+			separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
+
+	<delete id="deleteByIds" parameterType="list">
+		delete from
+		aota_app
+		where id in
+		<foreach item="id" index="index" collection="list" open="("
+			separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<update id="trashOpt" parameterType="map">
+		update aota_app
+		<set>
+			trash = #{trash}
+		</set>
+		where id in
+		<foreach item="id" index="index" collection="ids" open="("
+			separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
+
+	<update id="updateAppBySeq" parameterType="map">
+		update aota_app
+		<set>
+			app_sequence = #{sequence}
+		</set>
+		where id = #{appId,jdbcType=BIGINT}
+	</update>
+
+	<update id="putAppToPackage" parameterType="map">
+		update aota_app
+		<set>
+			<if test="packageId != null">
+				package_id = #{packageId},
+			</if>
+			<if test="createTime != null">
+				create_Time = NOW()
+			</if>
+		</set>
+		where id in
+		<foreach item="id" index="index" collection="ids" open="("
+			separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
+</mapper>

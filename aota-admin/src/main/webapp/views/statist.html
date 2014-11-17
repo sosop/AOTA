@@ -1,0 +1,96 @@
+<section class="search-section">
+    <form class="form-inline" role="form">
+    	<table class="table-form tc">
+            <tr>
+            	<td width="10%"><label>User Behavior Type</label></td>
+            	<td width="20%">
+            		<div class="dropdown" name="type" select-emu>
+		                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+		                    <span class="choosen-value">Download</span>
+		                    <span class="caret"></span>
+		                </button>
+		                <ul class="dropdown-menu" role="menu" >
+		                    <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="queryParams.type = 1">Download</a>
+		                    </li>
+		                    <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="queryParams.type = 2">Upgrade</a>
+		                    </li>
+		                </ul>
+		            </div>
+            	</td>
+            	<td width="10%"><label for="exampleInputEmail2">Cycle Time</label></td>
+            	<td width="20%">
+            		<div class="dropdown" name="day" select-emu>
+		                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+		                    <span class="choosen-value">24 Hours</span>
+		                    <span class="caret"></span>
+		                </button>
+		                <ul class="dropdown-menu" role="menu">
+		                    <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="queryParams.day = 1">24 Hours</a>
+		                    </li>
+		                    <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="queryParams.day = 7">7 days</a>
+		                    </li>
+		                </ul>
+		            </div>
+            	</td>
+            	<td width="10%"><label for="up-rate">Upgrade success rate</label></td>
+            	<td width="20%"><input type="text" ng-model="queryParams.percent" placeholder="Percent" class="form-control" id="up-rate" placeholder="" name="percent" ></td>
+            	<td width="10%"><button type="submit" class="btn btn-primary pull-right search-btn" ng-click="queryDynStat()">Search</button></td>
+            </tr>
+        </table>
+    </form>
+
+    <!-- chart -->
+    <section class="chart-container stat-chart">
+	    <canvas id="stat-chart-day" width="480" height="160"></canvas>
+	    <canvas id="stat-chart-week" width="480" height="160"></canvas>
+	    <div class="chart-info">
+			<p><i class="chart-icon {{chartIcon}}"></i> <span >{{ chartType }}:</span></p>
+			<p class="total" style="color:{{totalColor}}">{{chartTotal}}</p>
+		</div>
+	</section>
+
+    <header class="main-content-header">
+        <h5>App List Detail</h5>
+    </header>
+    <section class="result">
+    	<table class="table table-result">
+	        <thead>
+	            <tr>
+	                <th width="5%">App ID</th>
+	                <th width="10%">App Name</th>
+	                <th width="7%">App Icon</th>
+	                <th width="13%">Developer</th>
+	                <th width="10%">App Size</th>
+	                <th width="10%">Star Grade</th>
+	                <th width="10%">Last Version</th>
+	                <th width="15%">App Source Channel</th>
+	                <th width="10%">Upload Time</th>
+	                <th width="10%">App Sequence</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <tr  class="tr-container">
+	                <td colspan="100%">
+	                	<div class="tbody">
+	                		<table class="table table table-striped">
+	                			<tbody>
+						            <tr ng-repeat="app in apps | orderBy:orderProp">
+						                <td width="5%">{{app.id}}</td>
+						                <td width="10%">{{app.appName}}</td>
+						                <td width="7%"><img class="app-icon" ng-src="{{app.appIcon}}"></td>
+						                <td width="13%">{{app.appDeveloper}}</td>
+						                <td width="10%">{{app.appSize | size}}</td>
+						                <td width="10%" show-star></td>
+						                <td width="10%">{{app.versionName}}</td>
+						                <td width="15%">{{app.sourceChannel}}</td>
+						                <td width="10%">{{app.updateTime | time}}</td>
+						                <td width="10%"><input data-id="{{app.id}}" class="update-sqc form-control" type="text" value="{{app.appSequence}}" ng-blur="updateSqc($event)"></td>
+						            </tr>
+	                		</table>
+	                	</div>
+                	</td>
+               </tr>
+	        </tbody>
+	    </table>
+    </section>
+</section>

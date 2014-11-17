@@ -1,0 +1,28 @@
+<section class="chart-container col-md-8 d-h">
+    <canvas id="d-d" width="480" height="160"></canvas>
+    <div class="chart-info">
+		<p><i class="chart-icon sprite-download-h"></i> Download:</p>
+		<p class="total">{{ total[0] | number }}</p>
+	</div>
+</section>
+<section class="chart-container col-md-8 u-h">
+    <canvas id="u-d" width="480" height="160"></canvas>
+    <div class="chart-info">
+		<p><i class="chart-icon sprite-upgrade-h"></i> Upgrade:</p>
+		<p class="total">{{ total[1] | number }}</p>
+	</div>
+</section>
+<section class="chart-container col-md-8 d-d">
+    <canvas id="d-w" width="480" height="160"></canvas>
+    <div class="chart-info">
+		<p><i class="chart-icon sprite-download-d"></i> Download:</p>
+		<p class="total">{{ total[2] | number }}</p>
+	</div>
+</section>
+<section class="chart-container col-md-8 u-d">
+    <canvas id="u-w" width="480" height="160"></canvas>
+    <div class="chart-info">
+		<p><i class="chart-icon sprite-upgrade-d"></i> Upgrade:</p>
+		<p class="total">{{ total[3] | number }}</p>
+	</div>
+</section>

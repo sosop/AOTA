@@ -1,0 +1,53 @@
+.chart-container {
+	position: relative;
+	height: 50%;
+}
+.chart-container canvas {
+	position: absolute;
+	left: 50%;
+	margin-left: -230px;
+	bottom: 0px;
+	width: 480px;
+	height: 160px;
+	margin-bottom: 40px;
+}
+.chart-container .chart-info {
+	position: relative;
+	float: right;
+	color: #777;
+	text-align: right;
+	margin-right: 140px;
+	margin-top: 10px;
+	font-size: 0.9em;
+}
+.chart-info p{
+	margin-bottom: 0px;
+}
+.chart-info .total {
+	font-size: 28px;
+}
+.d-h , .u-h{
+	margin-bottom: 15px;
+	border-bottom: 1px dotted #ebebeb;
+}
+.d-h .total {
+	color: #009cde;
+}
+.u-h .total {
+	color: #b48ead;
+}
+.d-d .total {
+	color: #a3be8c;
+}
+.u-d .total {
+	color: #ebcb8b;
+}
+
+/* response */
+@media(max-width: 1480px){
+	.chart-container .chart-info {
+		margin-right: 0px;
+		margin-top: 0px;
+	}
+}
+

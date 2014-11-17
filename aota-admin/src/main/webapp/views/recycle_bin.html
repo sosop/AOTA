@@ -1,0 +1,91 @@
+<section class="search-section">
+    <form class="form-inline" role="form">
+        <table class="table-form tc">
+            <tr>
+                <td><label for="app-name">App Name</label></td>
+                <td><input type="text" ng-model="queryParams.appName" class="form-control" id="app-name" placeholder="" ></td>
+                <td><label for="app-channel">App Source Channel</label></td>
+                <td>
+                    <div class="dropdown" name="type" select-emu>
+                        <button class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown">
+                            <span class="choosen-value">All Source Channel</span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="queryParams.sourceChannel = null">All Source Channel</a>
+                            </li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="queryParams.sourceChannel = 1">Official Recommendation</a>
+                            </li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="queryParams.sourceChannel = 2">Third Party Access</a>
+                            </li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="queryParams.sourceChannel = 3">Free Developers</a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+                <td><label for="app-sqc">App Sequence</label></td>
+                <td><input type="text" placeholder="Integer" ng-model="queryParams.appSequence" class="form-control" id="app-sqc" ></td>
+                <td><label for="upload-time">Upload Time</label></td>
+                <td><input type="text" placeholder="YYYY-MM-DD" ng-model="queryParams.uploadTime" class="form-control" id="upload-time" ></td>
+                <td><button type="submit" class="btn btn-primary search-btn" ng-click="queryApp()">Search</button></td>
+            </tr>
+            <tr>
+                <td><label for="lasted-version">Lasted Version</label></td>
+                <td><input type="text" ng-model="queryParams.versionName" class="form-control" id="lasted-version" placeholder=""></td>
+                <td colspan="100%"></td>
+            </tr>
+        </table>
+    </form>
+
+    <header class="main-content-header">
+        <h5>Resource and Operation</h5>
+    </header>
+    <section class="operation">
+        <button class="btn btn-primary" ng-click="doRecovery()">Recovery</button>
+        <button class="btn btn-primary" ng-click="doDelete()">Delete Thoroughly</button>
+        <a class="pull-right" add-host href="admin/#/app_manage">Back To App Management &gt;&gt;</a>
+    </section>
+    <section class="result">
+        <table class="table table-result">
+            <thead>
+            <tr>
+                <th width="8%"><chkbox-all></chkbox-all>All Select</th>
+                <th width="5%">App ID</th>
+                <th width="7%">App Name</th>
+                <th width="7%">App Icon</th>
+                <th width="10%">Developer</th>
+                <th width="8%">App Size</th>
+                <th width="9%">Star Grade</th>
+                <th width="10%">Last Version</th>
+                <th width="15%">App Source Channel</th>
+                <th width="10%">Upload Time</th>
+                <th width="10%">App Sequence</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr  class="tr-container">
+                <td colspan="100%">
+                    <div class="tbody">
+                        <table class="table table table-striped">
+                            <tbody>
+                            <tr ng-repeat="app in apps | orderBy:orderProp">
+                                <td width="8%"><chkbox></chkbox></td>
+                                <td width="5%">{{app.id}}</td>
+                                <td width="7%">{{app.appName}}</td>
+                                <td width="7%"><img class="app-icon" ng-src="{{app.appIcon}}"></td>
+                                <td width="10%">{{app.appDeveloper}}</td>
+                                <td width="8%">{{app.appSize | size}}</td>
+                                <td width="9%" show-star></td>
+                                <td width="10%">{{app.versionName}}</td>
+                                <td width="15%">{{app.sourceChannel}}</td>
+                                <td width="10%">{{app.updateTime}}</td>
+                                <td width="10%">{{app.appSequence}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</section>

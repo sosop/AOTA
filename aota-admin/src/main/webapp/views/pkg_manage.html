@@ -1,0 +1,65 @@
+<section class="search-section">
+    <form class="form-inline" role="form">
+        <table class="table-form tc">
+            <tr>
+                <td><label for="pkg-name">Package Name</label></td>
+                <td><input type="text" ng-model="queryParams.packageName" class="form-control" id="pkg-name" placeholder="" ></td>
+                <td><label for="create-time">Package Generation Time</label></td>
+                <td><input type="text" ng-model="queryParams.createTime" class="form-control" id="create-time" placeholder="YYYY-MM-DD"  ></td>
+                <td><label for="pkg-sqc">Package Sequence</label></td>
+                <td><input type="text" placeholder="Integer" ng-model="queryParams.sequence" class="form-control" id="pkg-sqc"></td>
+                <td><label for="app-num">App Number</label></td>
+                <td><input type="text" placeholder="Integer" ng-model="queryParams.quantity" class="form-control" id="app-num"></td>
+                <td><button type="submit" class="btn btn-primary search-btn" ng-click="queryPkg()">Search</button></td>
+            </tr>
+        </table>
+    </form>
+
+    <header class="main-content-header">
+        <h5>Resource and Operation</h5>
+    </header>
+    <section class="operation">
+        <button class="btn btn-primary" ng-click="releasePkg()">Release Package</button>
+        <button class="btn btn-primary" ng-click="dissolutionPkg()">Dissolution Package</button>
+    </section>
+    <section class="result">
+    	<table class="table table-result">
+	        <thead>
+	            <tr>
+                    <th width="8%"><chkbox-all></chkbox-all>All Select</th>
+	                <th width="10%">Package ID</th>
+	                <th width="17%">Package Generation Time</th>
+	                <th width="12%">Package Name</th>
+	                <th width="10%">App Numbers</th>
+	                <th width="8%">Package Size</th>
+	                <th width="9%">App List</th>
+	                <th width="10%">Package Sequence</th>
+	                <th width="15%">Release Time</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <tr  class="tr-container">
+	                <td colspan="100%">
+	                	<div class="tbody">
+	                		<table class="table table table-striped">
+	                			<tbody>
+						            <tr ng-repeat="pkg in pkgs">
+                                        <td width="8%"><chkbox></chkbox></td>
+						                <td width="10%">{{pkg.id}}</td>
+						                <td width="17%">{{pkg.createTime}}</td>
+						                <td width="12%">{{pkg.packageName}}</td>
+						                <td width="10%">{{pkg.pkgQuantity}}</td>
+						                <td width="8%">{{pkg.packageSize | size}}</td>
+						                <td width="9%"></td>
+						                <td width="10%">{{pkg.packageSequence}}</td>
+						                <td width="15%">{{pkg.releaseTime |time}}</td>
+						            </tr>
+	                		</table>
+	                	</div>
+                	</td>
+               </tr>
+	        </tbody>
+	    </table>
+    </section>
+</section>
+

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tcl.aota.persistent.dao.db.AppLogDAO">
+	<resultMap id="BaseResultMap" type="com.tcl.aota.persistent.model.AppLog">
+		<result column="app_id" property="appId" jdbcType="BIGINT" />
+		<result column="status" property="status" jdbcType="TINYINT" />
+		<result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		app_id, status, create_time
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from aota_applog
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+
+	<select id="selectBetweenDate" resultType="int" parameterType="map">
+		select
+		count(*)
+		from aota_applog
+		where create_time >= #{start}
+		and
+		create_time &lt; #{end}
+		<if test="status != null">
+			and status in
+			<foreach item="item" index="index" collection="status" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+	<select id="selectAppIdBetweenDate" resultMap="BaseResultMap"
+		parameterType="map">
+		select app_id, count(*) as status
+		from aota_applog
+		where create_time >=
+		#{start}
+		and create_time &lt;= #{end}
+		<if test="status != null">
+			and status in
+			<foreach item="item" index="index" collection="status" open="("
+				separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		group by app_id
+		order by app_id asc
+	</select>
+
+	<insert id="insertBath" parameterType="java.util.List">
+		insert into aota_applog(app_id,status,create_time)
+		values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.appId,jdbcType=BIGINT},#{item.status,jdbcType=TINYINT},#{item.createTime,jdbcType=TIMESTAMP})
+		</foreach>
+	</insert>
+
+</mapper>

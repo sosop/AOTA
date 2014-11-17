@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<classPathEntry
+		location="/data/m2/repository/mysql/mysql-connector-java/5.1.28/mysql-connector-java-5.1.28.jar" />
+	<context id="context1" targetRuntime="MyBatis3">
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://172.26.50.19:3306/aota?useUnicode=true&amp;characterEncoding=utf8"
+			userId="root" password="root" />
+		<javaModelGenerator targetPackage="com.tcl.aota.persistent.model"
+			targetProject="/data/prj-tcl/gitRep/AOTA-Serv/aota-persistent/src/main/java" />
+		<sqlMapGenerator targetPackage="com.tcl.aota.persistent.model"
+			targetProject="/data/prj-tcl/gitRep/AOTA-Serv/aota-persistent/src/main/resources" />
+		<javaClientGenerator
+			targetPackage="com.tcl.aota.persistent.model"
+            targetProject="/data/prj-tcl/gitRep/AOTA-Serv/aota-persistent/src/main/java" type="XMLMAPPER" />
+		<!-- <table tableName="aota_admin"     domainObjectName="Admin"/> -->
+		<table tableName="aota_app"       domainObjectName="App"/>
+		<!-- <table tableName="aota_package"   domainObjectName="Package"/>
+		<table tableName="aota_strategy"  domainObjectName="Strategy"/> -->
+	</context>
+</generatorConfiguration>

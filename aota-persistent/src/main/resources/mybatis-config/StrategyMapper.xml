@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tcl.aota.persistent.dao.db.StrategyDAO" >
+  <resultMap id="BaseResultMap" type="com.tcl.aota.persistent.model.Strategy" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="upgrade_period" property="upgradePeriod" jdbcType="INTEGER" />
+    <result column="auto_down_wifi" property="autoDownwifi" jdbcType="TINYINT" />
+    <result column="del_upgrade_apk" property="delUpgradeapk" jdbcType="TINYINT" />
+    <result column="clear_cache" property="clearCache" jdbcType="TINYINT" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, upgrade_period, auto_down_wifi, del_upgrade_apk, clear_cache
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from aota_strategy
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from aota_strategy
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="com.tcl.aota.persistent.model.Strategy" >
+    insert into aota_strategy (id, upgrade_period, auto_down_wifi,
+      del_upgrade_apk, clear_cache
+      )
+    values (#{id,jdbcType=BIGINT}, #{upgradePeriod,jdbcType=INTEGER}, #{autoDownwifi,jdbcType=TINYINT},
+      #{delUpgradeapk,jdbcType=TINYINT}, #{clearCache,jdbcType=TINYINT} )
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.tcl.aota.persistent.model.Strategy" >
+    update aota_strategy
+    <set >
+      <if test="upgradePeriod != null" >
+          upgrade_period = #{upgradePeriod,jdbcType=INTEGER},
+      </if>
+      <if test="autoDownwifi != null" >
+          auto_down_wifi = #{autoDownwifi,jdbcType=TINYINT},
+      </if>
+      <if test="delUpgradeapk != null" >
+          del_upgrade_apk = #{delUpgradeapk,jdbcType=TINYINT},
+      </if>
+      <if test="clearCache != null" >
+          clear_cache = #{clearCache,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+   <select id="selectStrategyConfig" resultMap="BaseResultMap">
+      select <include refid="Base_Column_List"/> from aota_strategy order by id desc limit 1;
+   </select>
+
+</mapper>

@@ -1,0 +1,47 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context  
+	  	http://www.springframework.org/schema/context/spring-context.xsd
+	">
+
+	<context:property-placeholder location="classpath*:props/*.properties"
+		ignore-resource-not-found="true" />
+
+	<context:annotation-config />
+	<context:component-scan base-package="com.tcl.aota.persistent" />
+	
+
+	<bean id="dataSource" destroy-method="close"
+		class="org.apache.commons.dbcp.BasicDataSource" 
+		p:driverClassName="${jdbc.drive}"
+		p:url="${jdbc.url}" 
+		p:username="${jdbc.username}" 
+		p:password="${jdbc.password}"
+		p:maxActive="${jdbc.maxActive}" 
+		p:maxIdle="${jdbc.maxIdle}" 
+		p:maxWait="${jdbc.maxWait}"
+		p:validationQuery="${jdbc.validationQuery}" 
+		p:testOnBorrow="${jdbc.testOnBorrow}"
+		p:testOnReturn="${jdbc.testOnReturn}" 
+		p:testWhileIdle="${jdbc.testWhileIdle}"
+		p:defaultAutoCommit="${jdbc.defaultAutoCommit}" />
+
+
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath:mybatis-config/*Mapper.xml" />
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.tcl.aota.persistent.dao.db" />
+	</bean>
+
+	<bean id="timingAspect" class="org.perf4j.log4j.aop.TimingAspect" />
+	
+</beans>

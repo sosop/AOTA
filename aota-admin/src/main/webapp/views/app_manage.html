@@ -1,0 +1,294 @@
+<section class="search-section">
+    <form class="form-inline" role="form">
+        <table class="table-form tc">
+            <tr>
+                <td><label for="app-name">App Name</label></td>
+                <td><input type="text" ng-model="queryParams.appName" class="form-control" id="app-name" placeholder="" ></td>
+                <td><label for="app-channel">App Source Channel</label></td>
+                <td>
+                    <div class="dropdown" name="type" select-emu>
+                        <button class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown">
+                            <span class="choosen-value">All Source Channel</span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="queryParams.sourceChannel = null">All Source Channel</a>
+                            </li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="queryParams.sourceChannel = 1">Official Recommendation</a>
+                            </li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="queryParams.sourceChannel = 2">Third Party Access</a>
+                            </li>
+                            <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="queryParams.sourceChannel = 3">Free Developers</a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+                <td><label for="app-sqc">App Sequence</label></td>
+                <td><input type="text" placeholder="Integer" ng-model="queryParams.appSequence" class="form-control" id="app-sqc" placeholder=""></td>
+                <td><label for="upload-time">Upload Time</label></td>
+                <td><input type="text" placeholder="YYYY-MM-DD" ng-model="queryParams.uploadTime" class="form-control" id="upload-time" placeholder=""></td>
+                <td><button type="submit" class="btn btn-primary search-btn" ng-click="queryApp()">Search</button></td>
+            </tr>
+            <tr>
+                <td><label for="lasted-version">Lasted Version</label></td>
+                <td><input type="text" ng-model="queryParams.versionName" class="form-control" id="lasted-version" placeholder=""></td>
+                <td><label for="developer">Developer</label></td>
+                <td><input type="text" ng-model="queryParams.appDeveloper" class="form-control" id="developer" placeholder=""></td>
+                <td colspan="100%"></td>
+            </tr>
+        </table>
+    </form>
+
+    <header class="main-content-header">
+        <h5>Resource and Operation</h5>
+    </header>
+    <section class="operation">
+        <button class="btn btn-success" id="upload-app-btn">Upload</button>
+        <button class="btn btn-primary" id="delete-app-btn" ng-click="deleteApp()">Delete</button>
+        <button class="btn btn-primary" id="upgrade-rule-btn">Upgrade Rule</button>
+        <button class="btn btn-primary" id="make-pkg-btn" ng-click="pkgApp()">Make Package</button>
+        <a class="pull-right" add-host href="admin/#/recycle_bin">Go to Recycle Bin &gt;&gt;</a>
+    </section>
+    <section class="result">
+    	<table class="table table-result">
+	        <thead>
+	            <tr>
+                    <th width="8%"><chkbox-all></chkbox-all>All Select</th>
+	                <th width="5%">App ID</th>
+	                <th width="7%">App Name</th>
+	                <th width="7%">App Icon</th>
+	                <th width="10%">Developer</th>
+	                <th width="8%">App Size</th>
+	                <th width="9%">Star Grade</th>
+	                <th width="10%">Last Version</th>
+	                <th width="15%">App Source Channel</th>
+	                <th width="10%">Upload Time</th>
+	                <th width="10%">App Sequence</th>
+	            </tr>
+	        </thead>
+	        <tbody>
+	            <tr  class="tr-container">
+	                <td colspan="100%">
+	                	<div class="tbody">
+	                		<table class="table table-striped">
+	                			<tbody>
+						            <tr ng-repeat="app in apps | orderBy:orderProp">
+                                        <td width="8%"><chkbox></chkbox></td>
+						                <td width="5%">{{app.id}}</td>
+						                <td width="7%">{{app.appName}}</td>
+						                <td width="7%"><img class="app-icon" ng-src="{{app.appIcon}}"></td>
+						                <td width="10%">{{app.appDeveloper}}</td>
+						                <td width="8%">{{app.appSize | size}}</td>
+						                <td width="9%" show-star></td>
+						                <td width="10%">{{app.versionName}}</td>
+						                <td width="15%">{{app.sourceChannel}}</td>
+						                <td width="10%">{{app.updateTime}}</td>
+						                <td width="10%"><input data-id="{{app.id}}" class="update-sqc form-control" type="text" value="{{app.appSequence}}" ng-blur="updateSqc($event)"></td>
+						            </tr>
+	                		</table>
+	                	</div>
+                	</td>
+               </tr>
+	        </tbody>
+	    </table>
+    </section>
+</section>
+
+<!--modal-->
+<!--upload app-->
+<div class="modal fade" id="upload-app" data-backdrop="static">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">Upload App</h4>
+      </div>
+      <div class="modal-body clearfix">
+        <section class="form-section">
+            <form>
+                <table class="table-form">
+                    <tr>
+                        <td><label>App Upload</label></td></td>
+                        <td>
+                            <input type="text" ng-model="newApp.appUrlUUID" readonly="true" class="form-control" id="apk-url" placeholder="" >
+                            <input type="file" id="apk">
+                        </td>
+                        <td><button class="btn btn-primary" id="choose-apk" title="Choose File">Path</button> <button class="btn btn-success" id="upload-apk" title="Upload File">Upload</button></td>
+                    </tr>
+                    <tr>
+                        <td><label>App Source Channel</label></td></td>
+                        <td width="255px">
+                            <div class="dropdown" name="type" select-emu>
+                                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                    <span class="choosen-value">Official Recommendation</span>
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="newApp.sourceChannel = 1">Official Recommendation</a>
+                                    </li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="newApp.sourceChannel = 2">Third Party Access</a>
+                                    </li>
+                                    <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="newApp.sourceChannel = 3">Free Developers</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><label for="new-app-name">App Name</label></td></td>
+                        <td><input type="text" ng-model="newApp.appName" class="form-control" id="new-app-name" placeholder="" ></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><label for="new-app-size">App Size</label></td></td>
+                        <td>
+                            <input type="text" class="form-control" readonly="true" ng-value="newApp.appSize | size" id="new-app-size" />
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><label for="new-app-grade">Star Grade</label></td></td>
+                        <td><input type="text" ng-model="newApp.appStartGrade" class="form-control" id="new-app-grade" placeholder="" ></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><label for="new-app-developer">Developer</label></td></td>
+                        <td><input type="text" ng-model="newApp.appDeveloper" class="form-control" id="new-app-developer" placeholder="" ></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td colspan="100%">
+                            <ul class="nav nav-tabs" role="tablist">
+                              <li role="presentation" class="active"><a href="#app-detail" role="tab" data-toggle="tab">App Details</a></li>
+                              <li role="presentation"><a href="#permission-detail" role="tab" data-toggle="tab">All Permission Details</a></li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                              <div role="tabpanel" class="tab-pane fade in active" id="app-detail">
+                                    <textarea class="detail" ng-model="newApp.appDetail"></textarea>
+                              </div>
+                              <div role="tabpanel" class="tab-pane fade" id="permission-detail">
+                                    <textarea class="permission" readonly="true" ng-model="newApp.appPermission"></textarea>
+                              </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+        </section>
+        <section class="img-upload-section">
+            <h5>App Icon <span></span></h5>
+            <p class="small">(Sugest:512&times;512px jpg/png/gif &lt;800k)</p>
+            <div class="app-icon-upload">
+                <div class="upload-area">
+                    <img id="app-icon-preview">
+                    <div class="cover"></div>
+                    <input type="file" id="app-icon" />
+                </div>
+            </div>
+            <h5>App Screenshot</h5>
+            <p class="small">(Sugest:480&times;800px jpg/png/gif &lt;300k)</p>
+            <div class="app-ss-upload clearfix">
+                <div class="upload-area">
+                    <img class="app-ss-preview">
+                    <div class="cover"></div>
+                    <input type="file" class="app-ss" id="app-ss-1" />
+                </div>
+                <div class="upload-area">
+                    <img class="app-ss-preview">
+                    <div class="cover"></div>
+                    <input type="file" class="app-ss" id="app-ss-2" />
+                </div>
+                <div class="upload-area">
+                    <img class="app-ss-preview">
+                    <div class="cover"></div>
+                    <input type="file" class="app-ss" id="app-ss-3" />
+                </div>
+                <div class="upload-area">
+                    <img class="app-ss-preview">
+                    <div class="cover"></div>
+                    <input type="file" class="app-ss" id="app-ss-4" />
+                </div>
+            </div>
+        </section>
+        <div class="modal-body-cover"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary btn-confirm" id="save-app" ng-click="addApp()">OK</button>
+        <button type="button" class="btn btn-default btn-confirm" data-dismiss="modal">Cancel</button>
+        </form>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!--upgrade rule-->
+<div class="modal fade" id="upgrade-rule">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">Upgrade Rule</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+            <table class="table-form">
+                <tr><td width="20%"></td><td width="25%"></td><td width="20%"></td><td></td></tr>
+                <tr>
+                    <td>Upload Cycle</td>
+                    <td colspan="2">
+                        <div class="dropdown" select-emu>
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                <span class="choosen-value">{{ rule.upgradePeriod === 1 ? '24 Hours' : '7 days'}}</span>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="rule.upgradePeriod = 1">24 Hours</a>
+                                </li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="rule.upgradePeriod = 7">7 days</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                    <td><small class="small">Request Cycle of Client to Admin</small></td>
+                </tr>
+                <tr>
+                    <td colspan="2">WIFI Automatic Upgrade(Slient Upgrade)</td>
+                    <td>
+                        <div class="radio-group">
+                            <div class="custom-radio bordered {{rule.autoDownwifi === 1?'checked':''}}" ng-click="rule.autoDownwifi = 1"><i></i></div><label ng-click="rule.autoDownwifi = 1">Yes</label>
+                            <div class="custom-radio bordered {{rule.autoDownwifi === 0?'checked':''}}" ng-click="rule.autoDownwifi = 0"><i></i></div><label ng-click="rule.autoDownwifi = 0">No</label>
+                        </div>
+                    </td>
+                    <td><small class="small">Only WIFI mode, with old version app</small></td>
+                </tr>
+                <tr>
+                    <td colspan="2">Delete Installation on package after upgrade</td>
+                    <td>
+                        <div class="radio-group">
+                            <div class="custom-radio bordered {{rule.delUpgradeapk === 1?'checked':''}}" ng-click="rule.delUpgradeapk = 1"><i></i></div><label ng-click="rule.delUpgradeapk = 1">Yes</label>
+                            <div class="custom-radio bordered {{rule.delUpgradeapk === 0?'checked':''}}" ng-click="rule.delUpgradeapk = 0"><i></i></div><label ng-click="rule.delUpgradeapk = 0">No</label>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="2">Clear Cache</td>
+                    <td>
+                        <div class="radio-group">
+                            <div class="custom-radio bordered {{rule.clearCache === 1?'checked':''}}" ng-click="rule.clearCache = 1"><i></i></div><label ng-click="rule.clearCache = 1">Yes</label>
+                            <div class="custom-radio bordered {{rule.clearCache === 0?'checked':''}}" ng-click="rule.clearCache = 0"><i></i></div><label ng-click="rule.clearCache = 0">No</label>
+                        </div>
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary btn-confirm" id="save-rule" ng-click="saveRule()">OK</button>
+        <button type="button" class="btn btn-default btn-confirm" data-dismiss="modal">Cancel</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
